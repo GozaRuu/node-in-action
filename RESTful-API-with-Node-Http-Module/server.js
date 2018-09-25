@@ -16,10 +16,15 @@ const serveQuery = (req, res) => {
       });
       req.on('end', (lastChunk) => {
         if(lastChunk) todo += lastChunk; //add last chunk and save the data
-        TODOS.push(todo);
-        console.log(`Received Todo: ${todo}`);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'text/html');
+        if(todo == '') {
+          res.statusCode = 500;
+          res.end('ERROR 500: NO EMPTY TODOS ALLOWED');
+          return;
+        }
+        TODOS.push(todo);
+        console.log(`Received Todo: ${todo}`);
         res.end();
       });
       break;
@@ -36,7 +41,6 @@ const serveQuery = (req, res) => {
         });
         body += '</ul>';
       }
-      console.log('\n');
       res.statusCode = 200;
       res.setHeader('Content-Type', 'text/html');
       res.setHeader('Content-Length', Buffer.byteLength(body));
@@ -44,13 +48,13 @@ const serveQuery = (req, res) => {
       break;
 
     case 'DELETE':
-      //get id of element to delete from the urlL
+      //get id of element to delete from the url
       const pathname = url.parse(req.url).pathname; //parse url with the url module
       res.statusCode = 404;
       res.setHeader('Content-Type', 'text/html');
       //handle wrong requests
       if(pathname == '') {
-        res.end('ERROR 404: NO ID PROVIDED');
+        res.end('ERROR 404: WRONG DELETE REQUEST');
         return;
       }
 
@@ -65,6 +69,39 @@ const serveQuery = (req, res) => {
         res.end('OK');
       }
       break;
+
+    case 'PUT':
+      let newTodo = '';
+      req.on('data', (chunk) => {
+        newTodo += chunk; //build the newTodo through listening to data chunks
+      });
+      req.on('end', (lastChunk) => {
+        if(lastChunk) newTodo += lastChunk; //add last chunk and save the data
+
+        //send the response now that we have all the data
+        const pathname = url.parse(req.url).pathname; //parse url with the url module
+        res.statusCode = 404;
+        res.setHeader('Content-Type', 'text/html');
+        //handle wrong requests
+        if(pathname == '') {
+          res.end('ERROR 404: WRONG DELETE REQUEST');
+          return;
+        }
+        if(newTodo == '') {
+          res.statusCode = 500;
+          res.end('ERROR 500: NO EMPTY TODOS ALLOWED');
+          return;
+        }
+        const updateTodoID = parseInt(pathname.slice(1));
+        if(isNaN(updateTodoID)) res.end('ERROR 404: THE ID PROVIDED IS NOT A NUMBER');
+        else if(updateTodoID < 0 || updateTodoID >= TODOS.length) res.end('ERROR 404: THE ID PROVIDED IS NON EXISTANT');
+        res.statusCode = 200;
+        TODOS[updateTodoID] = newTodo; //update todo
+        console.log(`updated todo ${updateTodoID}: ${TODOS[updateTodoID]}`);
+        res.end('OK');
+      });
+      break;
+
     default:
       res.statusCode = 404;
       res.end('<h1>ERROR 404: UNSUPPORTED OR WRONG METHOD</h1>');
