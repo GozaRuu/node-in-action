@@ -1,0 +1,17 @@
+{
+  "name": "node-in-action",
+  "version": "1.0.0",
+  "description": "several node js solution-patterns to classic in-demand problems",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "NodeJS",
+    "ExpressJS",
+    "Mongoose",
+    "PassportJS"
+  ],
+  "author": "Kais Sghari",
+  "license": "ISC"
+}
