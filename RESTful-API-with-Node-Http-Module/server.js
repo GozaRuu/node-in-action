@@ -1,4 +1,5 @@
 const http = require('http');
+const url = require('url');
 
 const HOST = 'localhost';
 const PORT = '3000';
@@ -35,13 +36,35 @@ const serveQuery = (req, res) => {
         });
         body += '</ul>';
       }
-
+      console.log('\n');
       res.statusCode = 200;
       res.setHeader('Content-Type', 'text/html');
       res.setHeader('Content-Length', Buffer.byteLength(body));
       res.end(body);
       break;
 
+    case 'DELETE':
+      //get id of element to delete from the urlL
+      const pathname = url.parse(req.url).pathname; //parse url with the url module
+      res.statusCode = 404;
+      res.setHeader('Content-Type', 'text/html');
+      //handle wrong requests
+      if(pathname == '') {
+        res.end('ERROR 404: NO ID PROVIDED');
+        return;
+      }
+
+      const todoID = parseInt(pathname.slice(1));
+      if(isNaN(todoID)) res.end('ERROR 404: THE ID PROVIDED IS NOT A NUMBER');
+      else if(todoID < 0 || todoID >= TODOS.length) res.end('ERROR 404: THE ID PROVIDED IS NON EXISTANT');
+      else {
+        //OK
+        res.statusCode = 200;
+        const deletedTodo = TODOS.splice(todoID,1);
+        console.log(`deleted todo ${todoID}: ${deletedTodo}`);
+        res.end('OK');
+      }
+      break;
     default:
       res.statusCode = 404;
       res.end('<h1>ERROR 404: UNSUPPORTED OR WRONG METHOD</h1>');
