@@ -1,11 +1,12 @@
 const http = require('http');
 const fs = require('fs');
-const path = require('path');
+const urlParse = require('url').parse;
+const pathResolve = require('path').resolve;
 
-const root = __dirname;
 
 const handleRequest = (req, res) => {
-  const filepath = path.resolve(root + '/public' + req.url);
+  const filepath = pathResolve('./public' + urlParse(req.url).pathname);
+  console.log(`Request for file ${urlParse(req.url).pathname}`);
   fs.createReadStream(filepath).pipe(res);
 };
 
