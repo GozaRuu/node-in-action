@@ -13,5 +13,8 @@
     "PassportJS"
   ],
   "author": "Kais Sghari",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "formidable": "^1.2.1"
+  }
 }
