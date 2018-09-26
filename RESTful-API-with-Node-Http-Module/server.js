@@ -1,9 +1,6 @@
 const http = require('http');
 const url = require('url');
 
-const HOST = 'localhost';
-const PORT = '3000';
-
 //this server will receive TODOs and save them in an array and perfrom CRUD operaton on them
 const TODOS = []; //js array to hold the data no persistance required in this project
 
@@ -109,6 +106,4 @@ const serveQuery = (req, res) => {
 };
 
 const server = http.createServer(serveQuery);
-server.listen(PORT, HOST, () => console.log(`app is now listening on port ${PORT}...`));
-
 exports.server = server;
