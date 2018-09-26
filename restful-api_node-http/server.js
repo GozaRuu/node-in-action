@@ -4,7 +4,7 @@ const url = require('url');
 //this server will receive TODOs and save them in an array and perfrom CRUD operaton on them
 const TODOS = []; //js array to hold the data no persistance required in this project
 
-const serveQuery = (req, res) => {
+const handleRequest = (req, res) => {
   switch (req.method) {
     case 'POST':
       let todo = '';
@@ -105,5 +105,5 @@ const serveQuery = (req, res) => {
   }
 };
 
-const server = http.createServer(serveQuery);
+const server = http.createServer(handleRequest);
 exports.server = server;
