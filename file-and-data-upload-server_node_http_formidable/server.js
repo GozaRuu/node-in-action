@@ -1,17 +1,18 @@
 const http = require('http');
 const displayForm = require('./displayForm');
-const readUserData = require('./readUserData');
+const readFormData = require('./readFormData').readFormData;
 
+let count = 1;
 
 const handleRequest = (req, res) => {
   if (req.url =='/') {
     switch (req.method) {
       case 'GET':
-        displayForm.display(res);
+        displayForm.display(res, count);
         break;
       case 'POST':
-        displayForm.incrementCount(); //new contestant
-        readUserInput(req, res);
+        count++; //new contestant
+        readFormData(req, res);
         break;
       default:
         res.setStatus = 400;
