@@ -3,4 +3,4 @@ This is a Node core modules, Express, Passport, Mongoose filled collection of so
 
 All the solutions are in the form of JSON APIs that can be consumed by Frontends developed separately (e.g a React, React Native, AngularJS, VueJS,..).
 
-# Currently Under Development
+# Currently Adding more and more solutions and templates to this project
