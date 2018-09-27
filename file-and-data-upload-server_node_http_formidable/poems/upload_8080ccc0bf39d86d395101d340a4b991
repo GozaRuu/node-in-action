@@ -1,0 +1,46 @@
+*** The require() function is an example of this principle in action—it synchronously
+evaluates the target module’s code and returns the module object. Either the
+module will successfully load, or the program will fail right away.
+
+
+***When you develop networked programs in Node, they’ll often communicate
+by passing messages. In the best case, a message will arrive all at once. But
+sometimes messages will arrive in pieces, split into distinct data events. To
+develop networked applications, you’ll need to deal with these splits when
+they happen.
+
+
+***Modules managed by npm can be pure JavaScript or a combination of Java-
+Script and native addon code.1 Addons are dynamically linked shared
+objects—they provide the glue for working with native libraries written in C
+or C++.
+
+
+***By choosing CouchDB—a RESTful, JSON-based, document-oriented datastore—
+we got a detailed look at how RESTful APIs work. We used the request
+module to simplify making HTTP client requests from Node.
+
+
+***There are lots of little jobs a typical web server would take care
+of that this code doesn’t touch. Here are some examples:
+• Routing based on URL paths
+• Managing sessions via cookies
+• Parsing incoming requests (like form data or JSON)
+• Rejecting malformed requests
+
+
+***One thing I really love about JavaScript is its extreme flexibility. In JavaScript
+there are seven different ways of doing anything, and you get to pick the one
+you like. This is especially true of managing asynchronous code.
+
+
+***Whenever a regular JavaScript function starts executing, it will finish in one
+of two ways: either it will run to completion, or it will throw an exception. For
+synchronous code, this is good enough; but for asynchronous code we need
+a bit more. Node.js callbacks use two arguments to reflect these two cases
+(e.g., function(err, data){...}), and EventEmitters use different event types.
+A promise is an object that encapsulates these two results for an asynchronous
+operation. Once the operation is completed, the promise will either be resolved
+(success case) or rejected (error case). You use the then() method to attach
+success and error handlers to a promise.
+
