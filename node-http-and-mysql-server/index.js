@@ -53,4 +53,13 @@ const handleRequest = (req, res) => {
 };
 
 const server = http.createServer(handleRequest);
-server.listen(PORT, HOST, () => console.log(`app is now listening on port ${PORT}...`));
+db.query(`
+  CREATE TABLE IF NOT EXISTS poem (
+    id INT(10) NOT NULL AUTO_INCREMENT,
+    date DATE,
+    author VARCHAR(30),
+    PRIMARY KEY (id)
+  )`, (err) => {
+  if (err) throw err;
+  server.listen(PORT, HOST, () => console.log(`app is now listening on port ${PORT}...`));
+});
