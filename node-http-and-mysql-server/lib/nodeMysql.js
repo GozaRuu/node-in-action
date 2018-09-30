@@ -59,6 +59,12 @@ exports.showRegistered = (db, req, res) => {
               <td>${row.date}</td>
               <td>${row.author}</td>
               <td>${row.peom}</td>
+              <td>
+                <form method="POST" action="/delte">
+                  <input type="hidden" name="id" value="${row.id}">
+                  <input type="submit" value="delete">
+                </form>
+              </td>
             </tr>
         `});
         registeredPeoms += `</table>`;
@@ -72,8 +78,8 @@ exports.showRegistered = (db, req, res) => {
 
 exports.register = (db, req, res) => {
   parseRequest(req, (data) => {
-    db.query(`
-      INSERT INTO poem(date, author, peom)
+    db.query(
+      `INSERT INTO poem (date, author, peom)
       VALUES (?, ?, ?)`,
     [data.date, data.author, data.peom],
     (err) => {
@@ -84,5 +90,13 @@ exports.register = (db, req, res) => {
 };
 
 exports.delete = (db, req, res) => {
-
+  parseRequest(req, (data) => {
+    db.query(
+      `DELETE from poem WHERE id=?`,
+    [data.id],
+    (err) => {
+      if (err) throw err;
+      exports.show(db, res);
+    });
+  });
 };
