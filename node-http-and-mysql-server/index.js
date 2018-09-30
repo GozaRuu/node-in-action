@@ -58,6 +58,7 @@ db.query(`
     id INT(10) NOT NULL AUTO_INCREMENT,
     date DATE,
     author VARCHAR(30),
+    poem LONGTEXT
     PRIMARY KEY (id)
   )`, (err) => {
   if (err) throw err;
