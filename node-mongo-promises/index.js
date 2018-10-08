@@ -1,35 +1,35 @@
 const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
 const dbOps = require('./operations');
 
 const url = 'mongodb://localhost:27017';
 const dbname = 'expmon';
 
-MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
-    assert.equal(err, null);
+MongoClient.connect(url, { useNewUrlParser: true }).then((client) => {
     console.log('connected correctly to server');
-
     const db = client.db(dbname);
-    dbOps.insertDocument(db, {name: 'pizza poem', description: 'pizzzzza me amore'}, 'poems', (err, result) => {
-        assert.equal(err, null);
+
+    dbOps.insertDocument(db, {name: 'pizza poem', description: 'pizzzzza me amore'}, 'poems')
+    .then((result) => {
         console.log(`Inserted Documents:\n`, result.ops);
+        return dbOps.findDocuments(db, 'poems');
+    })
+    .then((docs) => {
+        console.log('Found Document:\n', docs);
+        return dbOps.updateDocument(db, {name: 'pizza poem'}, {description: 'Love is Pizza'}, 'poems');
+    })
+    .then((result) => {
+        console.log(`Updated Document:`, result.result);
 
-        dbOps.findDocuments(db, 'poems', (err, docs) => {
-            assert.equal(err, null);
-
-            dbOps.updateDocument(db, {name: 'pizza poem'}, {description: 'Love is Pizza'}, 'poems', (err, result) => {
-                assert.equal(err, null);
-                console.log(`Updated Document:`, result.result);
-
-                dbOps.findDocuments(db, 'poems', (err, docs) => {
-                    assert.equal(err, null);
-
-                    db.dropCollection('poems', (err) => {
-                        if(err) console.log(`Dropped Collection ${err}`);
-                        client.close();
-                    });
-                });
-            });
-        });
-    });
-});
+        return dbOps.findDocuments(db, 'poems');
+    })
+    .then((docs) => {
+        console.log('Found Document:\n', docs);
+        return db.dropCollection('poems')
+    })
+    .then((result) => {
+        if(result) console.log(`Dropped Collection ${result}`);
+        client.close();
+    })
+    .catch((err) => console.log(err));
+})
+.catch((err) => console.log(err));
