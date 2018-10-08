@@ -1,0 +1,14 @@
+{
+  "name": "node-mongoose",
+  "version": "0.1.0",
+  "description": "node mongoose app example",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kais Sghari",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^5.3.2"
+  }
+}
